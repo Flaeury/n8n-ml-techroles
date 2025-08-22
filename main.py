@@ -32,9 +32,9 @@ class InputData(BaseModel):
     nivel_ensino: str
     formacao: str
     tempo_experiencia_dados: str
-    linguagens_preferidas: str
+    linguagens_Preferidas: str
     bancos_de_dados: str
-    cloud_Preferida: str
+    cloud_preferida: str
 
 # Bancos de dados para API
 bancos_sql = {'sqlserver','mysql','postgresql','oracle','googlebigquery',
@@ -113,9 +113,9 @@ def predict(data: InputData):
 #     nivel_ensino="Pós-graduação",
 #     formacao="Computação / Engenharia de Software / Sistemas de Informação/ TI",
 #     tempo_experiencia_dados="de 3 a 4 anos",
-#     linguagens_preferidas="Python, JavaScript",
+#     linguagens_Preferidas="Python, JavaScript",
 #     bancos_de_dados="PostgreSQL, MongoDB",
-#     cloud_Preferida="Amazon Web Services (AWS)"
+#     cloud_preferida="Amazon Web Services (AWS)"
 #     )
 #     resultado = predict(teste)
 #     print(resultado)
