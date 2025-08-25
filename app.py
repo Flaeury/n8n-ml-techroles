@@ -50,16 +50,17 @@ def map_bancos_user(input_str):
 # ==========================
 # Carregar modelo
 # ==========================
-MODEL_URL = os.getenv("MODEL_URL")
+# MODEL_URL = os.getenv("MODEL_URL")
 # print("URL do modelo:", MODEL_URL)
+# modelo = "modelo_cargos.pkl"
 
-resp = requests.get(MODEL_URL)
-resp.raise_for_status()
-tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
-with open(tmp_file.name, "wb") as f:
-    f.write(resp.content)
+# resp = requests.get(modelo)
+# resp.raise_for_status()
+# tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
+# with open(tmp_file.name, "wb") as f:
+#     f.write(resp.content)
 
-saved = joblib.load(tmp_file.name)
+saved = joblib.load("modelo_cargos.pkl")
 model = saved["model"]
 le_dict = saved["le_dict"]
 feature_columns = saved["feature_columns"]
@@ -126,18 +127,18 @@ def predict(data: InputData):
 if __name__ == "__main__":
     # teste = InputData(
     #     idade=25,
-    #     genero="masculino",
-    #     etnia="branco",
-    #     pcd="nao",
-    #     vive_no_brasil="sim",
-    #     estado_moradia="para(pa)",
-    #     nivel_ensino="posgraduacao",
-    #     formacao="computacao/engenhariadesoftware/sistemasdeinformacao/ti",
-    #     tempo_experiencia_dados="de3a4anos",
-    #     linguagens_preferidas="python,javascript",
-    #     bancos_de_dados="postgresql,mongodb",
-    #     cloud_preferida="amazonwebservices(aws)"
+        # genero="masculino",
+        # etnia="branco",
+        # pcd="nao",
+        # vive_no_brasil="sim",
+        # estado_moradia="para(pa)",
+        # nivel_ensino="posgraduacao",
+        # formacao="computacao/engenhariadesoftware/sistemasdeinformacao/ti",
+        # tempo_experiencia_dados="de3a4anos",
+        # linguagens_preferidas="python,javascript",
+        # bancos_de_dados="postgresql,mongodb",
+        # cloud_preferida="amazonwebservices(aws)"
     # )
     # resultado = predict(teste)
     # print(resultado)
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=False)
