@@ -9,7 +9,6 @@ import pandas as pd
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import uvicorn
-from preprocess import preprocess_data # Importe a nova função
 
 load_dotenv()
 app = FastAPI(title="Previsão de Cargos")
