@@ -54,7 +54,7 @@ MODEL_URL = os.getenv("MODEL_URL")
 print("URL do modelo:", MODEL_URL)
 # modelo = "modelo_cargos.pkl"
 
-resp = requests.get(modelo)
+resp = requests.get(MODEL_URL)
 resp.raise_for_status()
 tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
 with open(tmp_file.name, "wb") as f:
