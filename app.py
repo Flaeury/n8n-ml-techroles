@@ -50,17 +50,17 @@ def map_bancos_user(input_str):
 # ==========================
 # Carregar modelo
 # ==========================
-# MODEL_URL = os.getenv("MODEL_URL")
-# print("URL do modelo:", MODEL_URL)
+MODEL_URL = os.getenv("MODEL_URL")
+print("URL do modelo:", MODEL_URL)
 # modelo = "modelo_cargos.pkl"
 
-# resp = requests.get(modelo)
-# resp.raise_for_status()
-# tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
-# with open(tmp_file.name, "wb") as f:
-#     f.write(resp.content)
+resp = requests.get(modelo)
+resp.raise_for_status()
+tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
+with open(tmp_file.name, "wb") as f:
+    f.write(resp.content)
 
-saved = joblib.load("modelo_cargos.pkl")
+saved = joblib.load(tmp_file.name)
 model = saved["model"]
 le_dict = saved["le_dict"]
 feature_columns = saved["feature_columns"]
