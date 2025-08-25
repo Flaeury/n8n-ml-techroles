@@ -128,12 +128,19 @@ print("\n📊 Relatório de classificação:\n", classification_report(y_test, y
 # ==========================
 # 11. Salvar modelo
 # ==========================
-joblib.dump(
-    {"model": rf_model, "le_dict": le_dict, "feature_columns": X.columns.tolist()},
-    "modelo_cargos.pkl",
-    compress=3,
-    protocol=4   # mais compatível entre versões
-)
+
+joblib.dump({
+    "model": rf_model,
+    "le_dict": le_dict,
+    "feature_columns": X.columns.tolist()
+}, "modelo_cargos.pkl")
+
+# joblib.dump(
+#     {"model": rf_model, "le_dict": le_dict, "feature_columns": X.columns.tolist()},
+#     "modelo_cargos.pkl",
+#     compress=3,
+#     protocol=4   # mais compatível entre versões
+# )
 
 
 print("🚀 Modelo salvo em 'modelo_cargos.pkl'")
