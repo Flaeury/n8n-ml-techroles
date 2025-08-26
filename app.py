@@ -25,14 +25,16 @@ app.add_middleware(
 )
 
 # Carregar modelo
-MODEL_URL = os.getenv("MODEL_URL")
-resp = requests.get(MODEL_URL)
-resp.raise_for_status()
-tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
-with open(tmp_file.name, "wb") as f:
-    f.write(resp.content)
+# MODEL_URL = os.getenv("MODEL_URL")
+# resp = requests.get(MODEL_URL)
+# resp.raise_for_status()
+# tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
+# with open(tmp_file.name, "wb") as f:
+#     f.write(resp.content)
 
-saved = joblib.load(tmp_file.name)
+model_path = "modelo_cargos.pkl"
+print(f"Carregando modelo de {model_path}...")
+saved = joblib.load(model_path)
 model = saved["model"]
 le_dict = saved["le_dict"]
 feature_columns = saved["feature_columns"]
