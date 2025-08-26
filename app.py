@@ -92,20 +92,20 @@ def predict(data: InputData):
     }
 
 if __name__ == "__main__":
-    teste = InputData(
-        idade=25,
-        genero="Masculino",
-        etnia="Branco",
-        pcd="Não",
-        vive_no_brasil="Sim",
-        estado_moradia="Pará (PA)",
-        nivel_ensino="Pós-graduação",
-        formacao="Computação / Engenharia de Software / Sistemas de Informação/ TI",
-        tempo_experiencia_dados="de 3 a 4 anos",
-        linguagens_preferidas="Python",
-        bancos_de_dados="PostgreSQL, MongoDB",
-        cloud_preferida="Amazon Web Services (AWS)"
-        )
-    resultado = predict(teste)
-    print(resultado)
+    # teste = InputData(
+    #     idade=25,
+    #     genero="Masculino",
+    #     etnia="Branco",
+    #     pcd="Não",
+    #     vive_no_brasil="Sim",
+    #     estado_moradia="Pará (PA)",
+    #     nivel_ensino="Pós-graduação",
+    #     formacao="Computação / Engenharia de Software / Sistemas de Informação/ TI",
+    #     tempo_experiencia_dados="de 3 a 4 anos",
+    #     linguagens_preferidas="Python",
+    #     bancos_de_dados="PostgreSQL, MongoDB",
+    #     cloud_preferida="Amazon Web Services (AWS)"
+    #     )
+    # resultado = predict(teste)
+    # print(resultado)
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
