@@ -46,8 +46,8 @@ O fluxo completo é exposto como um endpoint de API, permitindo que qualquer apl
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/SeuUsuario/SeuRepositorio.git](https://github.com/SeuUsuario/SeuRepositorio.git)
-    cd SeuRepositorio
+    git clone [https://github.com/Flaeury/n8n-ml-techroles.git](https://github.com/Flaeury/n8n-ml-techroles.git)
+    cd n8n-ml-techroles
     ```
 2.  **Instale as dependências Python:**
     ```bash
