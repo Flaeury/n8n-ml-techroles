@@ -30,11 +30,13 @@ rf_model.fit(X_train, y_train)
 y_pred = rf_model.predict(X_test)
 print(f"\n✅ Acurácia: {accuracy_score(y_test, y_pred):.4f}")
 
+le_cargo = le_dict["cargo"]
 # Salvar modelo + encoders + colunas
 joblib.dump({
     "model": rf_model,
     "le_dict": le_dict,
-    "feature_columns": X.columns.tolist()
+    "feature_columns": X.columns.tolist(),
+    "cargo_classes": le_cargo.classes_.tolist()
 }, "modelo_cargos.pkl")
 
 print("🚀 Modelo salvo em 'modelo_cargos.pkl'")

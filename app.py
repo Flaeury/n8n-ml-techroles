@@ -9,7 +9,7 @@ import pandas as pd
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import uvicorn
-from preprocess import preprocess_data # Importe a nova função
+from preprocess import preprocess_data, normalize_text
 
 load_dotenv()
 app = FastAPI(title="Previsão de Cargos")
@@ -37,6 +37,15 @@ model = saved["model"]
 le_dict = saved["le_dict"]
 feature_columns = saved["feature_columns"]
 
+def normalize_user_input(user_data: dict):
+    normalized_data = {}
+    for key, value in user_data.items():
+        if isinstance(value, str):
+            normalized_data[key] = normalize_text(value)
+        else:
+            normalized_data[key] = value
+    return normalized_data
+
 # Rota de health check
 @app.get("/health")
 def health():
@@ -61,6 +70,8 @@ class InputData(BaseModel):
 def predict(data: InputData):
     d = data.model_dump()
 
+    d = normalize_user_input(d)
+
     # Crie um DataFrame a partir dos dados do usuário
     df_raw = pd.DataFrame([d])
 
@@ -81,4 +92,20 @@ def predict(data: InputData):
     }
 
 if __name__ == "__main__":
+    teste = InputData(
+        idade=25,
+        genero="Masculino",
+        etnia="Branco",
+        pcd="Não",
+        vive_no_brasil="Sim",
+        estado_moradia="Pará (PA)",
+        nivel_ensino="Pós-graduação",
+        formacao="Computação / Engenharia de Software / Sistemas de Informação/ TI",
+        tempo_experiencia_dados="de 3 a 4 anos",
+        linguagens_preferidas="Python, JavaScript",
+        bancos_de_dados="PostgreSQL, MongoDB",
+        cloud_preferida="Amazon Web Services (AWS)"
+        )
+    resultado = predict(teste)
+    print(resultado)
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
