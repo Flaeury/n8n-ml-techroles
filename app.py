@@ -6,6 +6,8 @@ import pandas as pd
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from preprocess import preprocess_data, normalize_text
+import requests
+import tempfile
 
 load_dotenv()
 app = FastAPI(title="Previsão de Cargos")
@@ -20,9 +22,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Carregar modelo localmente
-model_path = "modelo_cargos.pkl"
-saved = joblib.load(model_path)
+MODEL_URL = os.getenv("MODEL_URL")
+resp = requests.get(MODEL_URL)
+resp.raise_for_status()
+tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
+with open(tmp_file.name, "wb") as f:
+    f.write(resp.content)
+
+saved = joblib.load(tmp_file.name)
 model = saved["model"]
 le_dict = saved["le_dict"]
 feature_columns = saved["feature_columns"]
