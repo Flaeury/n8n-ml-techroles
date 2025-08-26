@@ -91,7 +91,7 @@ def predict(data: InputData):
         "cargo_previsto": cargo_previsto_str
     }
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # teste = InputData(
     #     idade=25,
     #     genero="Masculino",
@@ -108,4 +108,4 @@ if __name__ == "__main__":
     #     )
     # resultado = predict(teste)
     # print(resultado)
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
+    # uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
