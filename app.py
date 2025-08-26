@@ -102,7 +102,7 @@ if __name__ == "__main__":
         nivel_ensino="Pós-graduação",
         formacao="Computação / Engenharia de Software / Sistemas de Informação/ TI",
         tempo_experiencia_dados="de 3 a 4 anos",
-        linguagens_preferidas="Python, JavaScript",
+        linguagens_preferidas="Python",
         bancos_de_dados="PostgreSQL, MongoDB",
         cloud_preferida="Amazon Web Services (AWS)"
         )
