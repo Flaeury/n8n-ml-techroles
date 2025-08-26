@@ -1,14 +1,10 @@
-# app.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import os
-import requests
-import tempfile
 import pandas as pd
 from pydantic import BaseModel
 from dotenv import load_dotenv
-import uvicorn
 from preprocess import preprocess_data, normalize_text
 
 load_dotenv()
@@ -24,29 +20,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Carregar modelo
-# MODEL_URL = os.getenv("MODEL_URL")
-# resp = requests.get(MODEL_URL)
-# resp.raise_for_status()
-# tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pkl")
-# with open(tmp_file.name, "wb") as f:
-#     f.write(resp.content)
-
+# Carregar modelo localmente
 model_path = "modelo_cargos.pkl"
-print(f"Carregando modelo de {model_path}...")
 saved = joblib.load(model_path)
 model = saved["model"]
 le_dict = saved["le_dict"]
 feature_columns = saved["feature_columns"]
 
 def normalize_user_input(user_data: dict):
-    normalized_data = {}
-    for key, value in user_data.items():
-        if isinstance(value, str):
-            normalized_data[key] = normalize_text(value)
-        else:
-            normalized_data[key] = value
-    return normalized_data
+    return {k: normalize_text(v) if isinstance(v, str) else v for k, v in user_data.items()}
 
 # Rota de health check
 @app.get("/health")
@@ -70,44 +52,15 @@ class InputData(BaseModel):
 
 @app.post("/predict")
 def predict(data: InputData):
-    d = data.model_dump()
-
-    d = normalize_user_input(d)
-
-    # Crie um DataFrame a partir dos dados do usuário
+    d = normalize_user_input(data.model_dump())
     df_raw = pd.DataFrame([d])
-
-    # Pré-processamento
     df_processed = preprocess_data(df_raw, le_dict=le_dict, is_training=False)
-    
-    # Reordenar as colunas para coincidir com as colunas do modelo
     df_final = df_processed.reindex(columns=feature_columns, fill_value=0)
 
-    # Predição
     pred_encoded = model.predict(df_final)
-    cargo_previsto = le_dict["cargo"].inverse_transform(pred_encoded)
-    cargo_previsto_str = str(cargo_previsto[0])
+    cargo_previsto = le_dict["cargo"].inverse_transform(pred_encoded)[0]
 
     return {
         "input": d,
-        "cargo_previsto": cargo_previsto_str
+        "cargo_previsto": cargo_previsto
     }
-
-# if __name__ == "__main__":
-    # teste = InputData(
-    #     idade=25,
-    #     genero="Masculino",
-    #     etnia="Branco",
-    #     pcd="Não",
-    #     vive_no_brasil="Sim",
-    #     estado_moradia="Pará (PA)",
-    #     nivel_ensino="Pós-graduação",
-    #     formacao="Computação / Engenharia de Software / Sistemas de Informação/ TI",
-    #     tempo_experiencia_dados="de 3 a 4 anos",
-    #     linguagens_preferidas="Python",
-    #     bancos_de_dados="PostgreSQL, MongoDB",
-    #     cloud_preferida="Amazon Web Services (AWS)"
-    #     )
-    # resultado = predict(teste)
-    # print(resultado)
-    # uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
