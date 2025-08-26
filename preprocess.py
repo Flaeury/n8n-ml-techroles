@@ -26,7 +26,7 @@ def map_bancos(col):
 # FUNÇÃO PRINCIPAL DE PRÉ-PROCESSAMENTO
 def preprocess_data(df, le_dict=None, is_training=True):
     # 1. Normalizar strings
-    df = df.applymap(lambda x: normalize_text(x) if isinstance(x, str) else x)
+    df = df.map(lambda x: normalize_text(x) if isinstance(x, str) else x)
 
     # 2. Mapear bancos SQL/NoSQL
     bancos_mapped = map_bancos(df["bancos_de_dados"])
