@@ -1,0 +1,187 @@
+{
+  "name": "tech-roles",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "previsao",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Acess-Control-Allow-Origin",
+                "value": "https://agent-inteligent-n8n-forms.vercel.app"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -192,
+        32
+      ],
+      "id": "34bbfc44-c767-4557-93f5-2d31ba067e9b",
+      "name": "Webhook",
+      "webhookId": "171dc7a0-a149-4ca7-8fb9-5b83fa6ced0e"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.cargo_previsto }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        704,
+        32
+      ],
+      "id": "abd3a9d4-98eb-40bb-b769-4ffe985ef918",
+      "name": "Respond to Webhook",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://web-production-e7f17.up.railway.app/predict",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "idade",
+              "value": "={{ $json.body.idade }}"
+            },
+            {
+              "name": "genero",
+              "value": "={{ $json.body.genero }}"
+            },
+            {
+              "name": "etnia",
+              "value": "={{ $json.body.etnia }}"
+            },
+            {
+              "name": "pcd",
+              "value": "={{ $json.body.pcd }}"
+            },
+            {
+              "name": "vive_no_brasil",
+              "value": "={{ $json.body.vive_no_brasil }}"
+            },
+            {
+              "name": "estado_moradia",
+              "value": "={{ $json.body.estado_moradia }}"
+            },
+            {
+              "name": "nivel_ensino",
+              "value": "={{ $json.body.nivel_ensino }}"
+            },
+            {
+              "name": "formacao",
+              "value": "={{ $json.body.formacao }}"
+            },
+            {
+              "name": "tempo_experiencia_dados",
+              "value": "={{ $json.body.tempo_experiencia_dados }}"
+            },
+            {
+              "name": "linguagens_preferidas",
+              "value": "={{ $json.body.linguagens_Preferidas }}"
+            },
+            {
+              "name": "bancos_de_dados",
+              "value": "={{ $json.body.bancos_de_dados }}"
+            },
+            {
+              "name": "cloud_preferida",
+              "value": "={{ $json.body.cloud_preferida }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        32
+      ],
+      "id": "fb0125d3-71a6-4ffb-b1df-4947218d1c2c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8745554e-3726-42b5-b34e-d3faac4038e1",
+              "name": "cargo_previsto",
+              "value": "={{ { \"cargo_previsto\": $json.cargo_previsto } }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        32
+      ],
+      "id": "23822a8d-226c-4aed-98d8-6687f3ab7575",
+      "name": "Formatar JSON"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Formatar JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar JSON": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7a2c7f5b-0e7b-436f-8670-33fd5c11c5d2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a2f830cc540a83a6cb7cdbaf00d688772cc7b4740c08443c24ee8aa1f82ba843"
+  },
+  "id": "w8LDjwujchZjET5c",
+  "tags": []
+}
